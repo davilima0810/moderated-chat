@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum MessageStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id           String        @id @default(uuid())
+  name         String
+  email        String        @unique
+  passwordHash String
+  createdAt    DateTime      @default(now())
+  participants Participant[]
+  messages     Message[]
+}
+
+model Room {
+  id           String        @id @default(uuid())
+  name         String
+  createdAt    DateTime      @default(now())
+  participants Participant[]
+  messages     Message[]
+}
+
+model Participant {
+  id     String @id @default(uuid())
+  roomId String
+  userId String
+  room   Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([roomId, userId])
+}
+
+model Message {
+  id        String        @id @default(uuid())
+  roomId    String
+  authorId  String
+  content   String
+  status    MessageStatus @default(PENDING)
+  reason    String?
+  createdAt DateTime      @default(now())
+  room      Room          @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  author    User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+}
