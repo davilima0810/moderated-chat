@@ -1,0 +1,34 @@
+# macOS
+.DS_Store
+
+# Node
+**/node_modules
+**/dist
+**/.npm-cache
+
+# Build
+**/*.tsbuildinfo
+coverage
+
+# Environment
+**/.env
+**/.env.local
+**/.env.development
+**/.env.production
+
+# Keep examples
+!**/.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+
+# Prisma
+**/prisma/dev.db
+**/prisma/dev.db-journal
